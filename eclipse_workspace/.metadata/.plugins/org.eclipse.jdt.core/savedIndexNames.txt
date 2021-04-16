@@ -1,0 +1,1 @@
+INDEX VERSION 1.131+/home/vksalian/Desktop/Practice_2021/baremetal_tiva_TM4C123GH6PM_IDE/eclipse_workspace/.metadata/.plugins/org.eclipse.jdt.core

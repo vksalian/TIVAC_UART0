@@ -1,0 +1,103 @@
+#include <stdint.h>
+#include "led.h"
+#include "TM4C123.h"
+
+#define DELAY_NUM             (1000000UL)
+
+#define USE_AHB               (1)
+
+uint32_t dummy = 100;
+
+void soft_delay(uint32_t n);
+
+int main (void)
+{
+    /* Enable Clock for GPIO Port F */
+    SYSCTL->RCGCGPIO |= PORTF_CLK;
+
+#if USE_AHB
+    /* Enable AHB for GPIO Port F */
+    SYSCTL->GPIOHBCTL |= (1U<<5);
+
+    /* Set directions of All LEDs pins to Output */
+    led_ahb_dir(OUTPUT, L_RED|L_BLUE|L_GREEN);
+
+    /* Enable Digital functionality for All LED pins */
+    led_ahb_dig_en(ENABLE, L_RED|L_BLUE|L_GREEN);
+
+    /* Turn off All LEDs */
+    led_ahb_off_all();
+#else
+    /* Enable AHB for GPIO Port F */
+    SYSCTL->GPIOHBCTL &= ~(1U<<5);
+
+    /* Set directions of All LEDs pins to Output */
+    led_apb_dir(OUTPUT, L_RED|L_BLUE|L_GREEN);
+
+    /* Enable Digital functionality for All LED pins */
+    led_apb_dig_en(ENABLE, L_RED|L_BLUE|L_GREEN);
+
+    /* Turn off All LEDs */
+    led_apb_off_all();
+#endif
+
+    /* Forever Loop */
+    while(1)
+    {
+#if USE_AHB
+        /* Turn On RED LED */
+        led_on(L_RED);
+
+        /* Software delay */
+        soft_delay(DELAY_NUM);
+
+        /* Turn off Red LED */
+        led_off(L_RED);
+
+        /* Software delay */
+        soft_delay(DELAY_NUM);
+#else
+        /* Turn On RED LED */
+        led_on(L_RED);
+
+        /* Software delay */
+        soft_delay(DELAY_NUM);
+
+        /* Turn off Red LED */
+        led_off(L_RED);
+
+        /* Software delay */
+        soft_delay(DELAY_NUM);
+#endif
+    }
+}
+
+void soft_delay(uint32_t n)
+{
+    for (uint32_t i = 0; i < n; i++)
+    {
+        ;
+    }
+}
+
+/* This function will override the weak function */
+void HardFault_Handler(void)
+{
+	/* TODO : Safely Handle the faults without forever loop */
+    while(1);
+}
+
+/* This function will override the weak function */
+void NMI_Handler(void)
+{
+	/* TODO : Safely Handle the faults without forever loop */
+    while(1);
+}
+
+/* This function will override the weak function */
+void SysTick_Handler(void)
+{
+	/* TODO : Safely Handle the faults without forever loop */
+    while(1);
+}
+

@@ -1,0 +1,115 @@
+#include <stdint.h>
+#include "led.h"
+#include "TM4C123.h"
+
+#define DELAY_NUM             (1600000UL)
+
+#define USE_AHB               (1)
+#define SYS_CLK_HZ            (16000000U)
+
+uint32_t dummy = 100;
+
+void soft_delay(uint32_t n);
+
+int main (void)
+{
+    /* Enable Clock for GPIO Port F */
+    SYSCTL->RCGCGPIO |= PORTF_CLK;
+
+#if USE_AHB
+    /* Enable AHB for GPIO Port F */
+    SYSCTL->GPIOHBCTL |= (1U<<5);
+
+    /* Set directions of All LEDs pins to Output */
+    led_ahb_dir(OUTPUT, L_RED|L_BLUE|L_GREEN);
+
+    /* Enable Digital functionality for All LED pins */
+    led_ahb_dig_en(ENABLE, L_RED|L_BLUE|L_GREEN);
+
+    /* Turn off All LEDs */
+    led_ahb_off_all(ATOMIC);
+#else
+    /* Enable AHB for GPIO Port F */
+    SYSCTL->GPIOHBCTL &= ~(1U<<5);
+
+    /* Set directions of All LEDs pins to Output */
+    led_apb_dir(OUTPUT, L_RED|L_BLUE|L_GREEN);
+
+    /* Enable Digital functionality for All LED pins */
+    led_apb_dig_en(ENABLE, L_RED|L_BLUE|L_GREEN);
+
+    /* Turn off All LEDs */
+    led_apb_off_all(ATOMIC);
+#endif
+
+    /* SysTick Configuration */
+    /* Note: These definitions of registers are part of core_cm4.h file.
+     * But TM4C123GH6PM MCU datasheet has different name for these registers.
+     * SysTick->LOAD = STRELOAD
+     * SysTick->VAL  = STCURRENT
+     * SysTick->CTRL = STCTRL */
+
+    SysTick->LOAD = SYS_CLK_HZ - 1U;
+
+#if((SYS_CLK_HZ - 1U) > 0x00FFFFFFU)
+#error "SysTick RELOAD value overflow"
+#endif
+    SysTick->VAL  = 0U;
+	SysTick->CTRL = (1U<<0) | (1U<<1) | (1U<<2);
+
+	/* Note: Always check if the SysTick->LOAD is not exceeding / overflowing
+	   the 24-bit size. */
+
+    /* Forever Loop */
+    while(1)
+    {
+//#if USE_AHB
+//        /* Toggle RED LED */
+//        led_ahb_toggle(ATOMIC, L_RED);
+//
+//        /* Software delay */
+//        soft_delay(DELAY_NUM);
+//#else
+//        /* Toggle RED LED */
+//        led_apb_toggle(ATOMIC, L_RED);
+//
+//        /* Software delay */
+//        soft_delay(DELAY_NUM);
+//#endif
+    }
+}
+
+void soft_delay(uint32_t n)
+{
+    for (uint32_t i = 0; i < n; i++)
+    {
+        ;
+    }
+}
+
+/* This function will override the weak function */
+void HardFault_Handler(void)
+{
+	/* TODO : Safely Handle the faults without forever loop */
+    while(1);
+}
+
+/* This function will override the weak function */
+void NMI_Handler(void)
+{
+	/* TODO : Safely Handle the faults without forever loop */
+    while(1);
+}
+
+/* This function will override the weak function */
+void SysTick_Handler(void)
+{
+#if USE_AHB
+        /* Toggle RED LED */
+        led_ahb_toggle(ATOMIC, L_RED);
+#else
+        /* Toggle RED LED */
+        led_apb_toggle(ATOMIC, L_RED);
+#endif
+}
+

@@ -1,0 +1,206 @@
+Welcome to the Embedded Systems Programming course. My name is Miro
+Samek and in this lesson I'm going to show you how to change the flow of
+control through your code.
+
+Let's start with making a copy of the previous lesson1-project and
+renaming it to lesson2. If you don't have the lesson1-project, you can
+get it online from state-machine.com/quickstart.
+
+Making frequent backup copies of a working project is something I highly
+recommend. The golden rule of software development is to keep the code
+working at all times, by making only small incremental changes. So, if
+you get something working--save it. You will sure be glad you did, when
+you mess up a step. Typically it's much easier to back up to the last
+working version than try to fix broken code.
+
+Get inside the lesson2 directory and double-click on the workspace file
+to open the IAR toolset. If you don't have the IAR toolset, go back to
+lesson 0.
+
+So, here is the C program we've created in lesson 1. As every C program,
+this one starts execution at the main function. Inside main, you have a
+very simple linear code, in which the control flows from top to bottom.
+Let's have a quick look in the debugger, to see how our processor
+handles this simplest flow of control.
+
+Make sure that the debugger is set to the Simulator and click the
+"Download and Debug" button.
+
+Let me quickly remind you what you see in the debug mode. The
+disassembly window shows the machine instructions. The Register view
+shows the state of the ARM Cortex-M registers. The most interesting for
+you today is the Program Counter (PC) register, which  contains the
+address of the current instruction, which is the one highlighted in the
+disassembly view.
+
+Single step through the code one machine instruction at a time and watch
+how the PC changes at each step. Please note that you are only executing
+instructions to increment the R1 register, but there are no
+no any specific instructions for incrementing the PC. Rather, every
+instruction increments the PC as a side effect.
+
+So, here you have it: the simplest, linear control flow through the code
+from top to bottom is hardwired in the instructions themselves.
+
+In this lesson, you will learn how to change this hardwired flow of
+control, so that the program can loop or conditionally skip over parts
+of the code. Such changes in the flow of control will allow you to avoid
+repetitions and make decisions at run time.
+
+So now, let's exit the debugger and modify the code to use a loop.
+
+The simplest loop in C is the while-loop. You code it by adding the
+while keyword, followed by a condition in parentheses, followed by the
+body of the loop.
+
+This code starts with checking the condition, and if it is true, it
+executes the body of the loop and goes back to checking the condition.
+The loop exits only when the condition is false.
+
+In this particular case, we happened to have 21 increments of the
+counter variable, so to execute the same number of increments the
+condition is (counter < 21).
+
+Let's compile and run this code in the simulator.
+
+The first instruction moves 0 to the R0 register, which is now used to
+hold the counter variable
+
+The next B instruction is the very interesting Branch instruction,
+because it modifies the PC, so it skips over a few instructions.
+
+The next, CMP instruction, compares the R0 to the number 21 that you can
+actually see encoded as hex 15 in the instruction itself.
+
+The CMP instruction has a very interesting side effect of modifying the
+APSR register, which stands for Application Program Status Register.
+Specifically, the CMP instruction sets the N-bit (negative) in the APSR,
+because the comparison is performed as a difference R0-21, which turns
+out negative.
+
+The BLT instruction is a variant of the Branch instruction you already
+saw, but this one is conditional. Specifically, the the BLT instruction
+modifies the PC only when the N-bit in the APSR is set. Otherwise the
+BLT instruction simply falls through to the next instruction.
+
+At this point a good question is this: "How does the Branch instruction
+know where to jump?"
+
+Well, it turns out that this information is encoded in the instruction.
+
+Here is a page from the ARM Architecture Reference Manual, which
+explains the encoding of all the B instruction variants. Our instruction
+starts with 0xD, which means that it uses the encoding T1. The next
+nibble in the instruction denotes the condition, and 0xB means the LT
+condition.
+
+Finally, the byte FC encodes by how much the PC should be changed, which
+is called the offset. Now, the offset is a signed quantity, and from
+Lesson 1, you should remember that signed numbers use the two's
+complement representation. Therefore, the byte 0xFC represents -4.
+
+So, now we can calculate the new value of the PC. You take the current
+PC 0x7E and subtract 4, which gives 0x7A. This is what you expect the
+jump to go to.
+
+Let's verify this by executing the BLT instruction. Hey, what do you
+know, you are correct! The PC jumps backwards, so you have a loop, which
+you can verify by  stepping through the code.
+
+Please don't worry--I won't spend any more time on drilling into
+instructions. But I think that dissecting the BLT instruction has been
+really educational, because it gave you a glimpse into the inner
+workings of the ARM Cortex-M processor.
+
+So now, let's go back to the flow of control. I hope you have noticed
+that the disassembled code implements a different flow of control from
+what I've described for the while loop. The original code was supposed
+to test the condition first and then jump over the loop body if the
+condition wasn't true. The compiled code starts with an unconditional
+branch and reverses the order of the loop body and the testing of the
+condition. When you think about it, though, those two flows of control
+are equivalent, except the generated one is faster, because it has only
+one conditional branch at the bottom of the loop.
+
+This example demonstrates two important points. First, a single C
+statement, such as "while", can generate multiple machine instructions,
+which don't even have to be grouped together. Second: the compiler is
+pretty darn smart and knows the processor better than you.
+
+The non-linear flow of control has also a significant effect on how fast
+the processor can execute your code, and as an Embedded Systems
+programmer you need to be aware of it.
+
+First, there is the loop overhead, because you now execute additional
+tests and jumps just to handle the loop.
+
+But wait, it gets worse. The jumps add additional execution delays due
+to the pipeline stalls. Let me explain.
+
+All modern processors, including ARM Cortex-M, use an instruction
+pipeline to increase the throughput. Pipeline is like an assembly line,
+in which the processor works on multiple instructions at various stages
+of completion. This increases the number of instructions that can be
+processed in a given time.
+
+Each instruction is split into a sequence of independent steps, such as
+fetch from memory, decode, and execute, whereas each of these steps
+takes one clock cycle to complete. The pipeline works at full capacity
+when the instructions are executed in order. But, when this ordering is
+disrupted by a Branch instruction, the pipeline needs to discard the
+partially processed instructions and re-start at the new instruction.
+This means that the pipeline stalls for a few cycles.
+
+Please note that I'm saying that you should avoid loops in your
+programs. The effects I've just discussed are really important only in
+time-critical code, such as interrupt processing, and are irrelevant for
+most of the other cases.
+
+However, when you really need to speed things up, you now know what to
+do. You can unroll some loops either entirely or by as much as you need.
+For example, you can modify the while loop as follows:
+
+You increase the number of counter increments per a single pass through
+the loop and adjust the loop
+
+Now, when you execute the code, you can see that the testing and
+branching happens less frequently, yet you execute the same number of 21
+increments.
+
+Finally for this lesson, I'd like to show you how to use flow of control
+to make decisions at run time. Assume, for example, that you want to do
+something special every time the value of the counter variable becomes odd.
+
+Let's revert to the previous version by typing Ctrl-Z a few times and
+start coding the "if" statement, which you code as follows:
+
+You start with the if keyword followed by the condition in parentheses,
+followed by the code to execute when the condition is true.
+
+The condition expression used to test whether the counter is odd needs
+some explanation. The ampersand stands for the bit-wise AND operator,
+which performs the AND operation between every bit of the counter and
+the second operand. As you can see in the few examples, the second
+operand of 1 tests the least significant bit of the counter, which is
+zero when the counter is even and 1 when the counter is odd.
+
+The exclamation-point equals operator means not-equal.
+
+You can also add an optional else branch to the if, which is executed
+only when the condition is false:
+
+I hope that you noticed by now, that the control-flow statements in C
+can nest, so you can have an if within the while and so on.
+
+This concludes this lesson about flow of control. In the next lesson
+you'll learn a bit more about variables and pointers.  If you like this
+channel, please subscribe to stay tuned. You can also visit
+state-machine.com/quickstart for the class notes and project file downloads.
+
+---
+Course web-page:
+http://www.state-machine.com/quickstart
+
+YouTube playlist of the course:
+http://www.youtube.com/playlist?list=PLPW8O6W-1chwyTzI3BHwBLbGQoPFxPAPM
+

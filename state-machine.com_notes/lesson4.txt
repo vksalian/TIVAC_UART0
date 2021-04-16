@@ -1,0 +1,302 @@
+Welcome to the Embedded Systems Programming course. My name is Miro
+Samek and in this lesson I'm going to show you how to blink the LED on
+the Stellaris Launchpad board.
+
+For this lesson, I highly recommend that you download the User Manual of
+the board from the link I provide in the class notes for this video.
+
+If you don't have the board, you can still follow along in the
+Simulator, but your debugger views will be slightly different, and of
+course, you won't see the LED blink.
+
+The manual describes how to connect the board to your computer via the
+provided USB cable.
+
+For today, you are mostly interested in the very nice, Red-Green-Blue
+User LED located at the right edge of the board.
+
+The manual explains how the components on the board are connected to the
+microcontroller. Among others, you can see that the User LED is
+connected to GPIO, which means General Purpose Input-Output.
+
+At the end of the manual, you can find the schematics of the board.
+
+On the first page of the schematics you can see that the R, G, and B
+components, of the User LED are powered by transistors, which are
+controlled by outputs LED_R, LED_G, and LED_B, respectively.
+
+You can see these outputs again higher up in the schematics, where they
+connect to the microcontroller pins labeled Pin F1, Pin F2, and Pin F3.
+The the letter F, in this case stands, for GPIO-F.
+
+So now, that you have some idea of how the LED is connected, let's
+prepare the IAR project for this lesson. As usual, let's start with
+making a copy of the previous lesson3-project and renaming it to
+lesson4. If you don't have the lesson3-project, you can get it online
+from state-machine.com/quickstart.
+
+Get inside the new lesson4 directory and double-click on the workspace
+file to open the IAR toolset. If you don't have the IAR toolset, go back
+to lesson 0.
+
+If you have the Launchpad board, you should connect it to your PC now
+and make sure that: the debugger is configured for the TI Stellaris
+interface, and that the Download tab has the "Use flash loader" option
+checked.
+
+If you don't have the board, configure the Debugger for Simulator and
+follow along.
+
+Also, if you're using the board, please click on the TI Stellaris menu
+and check the "Reset will do system reset" option, so that the board
+will always start from clean reset.
+
+Finally, please rebuild the project entirely, to prevent the IAR from
+pulling in the main.c file from the previous lesson3 project.
+
+Now, let's go to the debugger and review quickly how the processor uses
+various addresses.
+
+First, a the low addresses starting with 0, you can see the machine
+instructions. This is the compiled code of your program, which is stored
+permanently inside the microcontroller. This means that the low
+addresses starting from 0 are mapped to the Flash memory.
+
+You also already know that the addresses starting from 0x2 are used for
+variables, such as the counter variable. That means that address 0x2
+followed by all zeros marks the start of the Random Access Memory (RAM).
+Indeed, you can see a "whole" in the addresses right before the
+beginning of RAM, which simply means that the debugger could not read
+anything from these addresses, most likely because they are unused.
+
+When you probe further, at the address 0x2000,8000, you can see that the
+RAM ends--so it is an "island" extending for 0x8000 addresses, which is
+32KB in decimal. This means that this microcontroller has 32KB of RAM.
+
+This is as much you know about the addresses at this point. However, in
+order to blink the LED, which is your goal of this lesson, you need to
+learn more. Ideally, you need to know the "map" of all the various
+continents and islands, such as the RAM island, in the address space.
+
+The document that describes the "memory map" of your microcontroller and
+much more in excruciating detail is called the "data sheet". I highly
+recommend that you download the datasheet for the specific LM4F
+microcontroller on your Launchpad board from the link I provide in the
+class notes.
+
+But I need to warn you right away, that datasheets tend to be huge. This
+particular one is over 1200 pages long, which is still relatively short
+as the datasheets go. Luckily, these documents are not intended to be
+read cover-to-cover. In fact, a large part of being an embedded systems
+engineer consists of knowing *how* to find your way around the
+datasheets so that you can find the information you need quickly. I hope
+that you to pick up these skill gradually as you participate in this course.
+
+So for example, to find the "memory map" of your microcontroller, simply
+search the datasheet for the string "memory map".
+
+So, here it is. The memory map of a typical modern ARM Cortex-M
+microcontroller. This is a very nice  and simple linear address space
+without any segments or memory banks. If you worked with other
+micro-controllers, especially the older 8-bitters, I hope you appreciate
+the simplicity of a linear 32-bit address space.
+
+I hope you recognize the first "island" on this map - called  "on-chip
+flash" from address 0 to 3,FFFF which corresponds to 256KB of flash memory.
+
+You should also recognize the familiar RAM island starting 0x2 followed
+by all zeroes, which is named here "Bit-banded on-chip S-RAM", whereas
+S-RAM stands for Static-RAM.
+
+In the Peripherals "continent", you should note the GPIO ports. These
+islands are interesting, because you are looking for "GPIO Port F" to
+control your LED.
+
+Keep looking further down the memory map. Hey! Here is "GPIO Port-F"
+that you've been looking for! Copy the starting address to the clipboard
+and go back to the IAR debugger.
+
+Paste the starting address of GPIO-F to the memory view and watch what
+comes up.
+
+Oops, this address range of GPIO-F advertised in the datasheet appears
+empty. If this happens to you, don't despair. The typical reason is that
+the hardware block is switched off by default to save power. The
+technique of blocking the clock signal to certain parts of the chip,
+called clock-gating, is a very common practice in modern micro-controllers.
+
+So, first you need to discover how to turn the GPIO-F block on, which
+means you need to go back to the datasheet.
+
+Go back to the beginning of the document and search for the string
+"clock gating".
+
+Oh, here is something interesting, let's go to that page.
+
+Let's search for the string GPIO in this section...
+
+Oh, here it is: the GPIO Glock gating control register.
+
+Let's take a closer look at the register description, because this is a
+very typical format commonly used in datasheets. The register is shown
+as a block of bits, always numbered from zero. The type of each bit is
+indicated, whereas RO means Read-Only, R/W means Read-Write, and WO
+would mean write-only.
+
+The logically related groups of bits are documented below the register
+block picture, starting from the most significant bit. For you, the most
+interesting is the description of bit 5, because this bit enables the
+clock to GPIO Port F. This confirms that this register is exactly what
+you've been looking for.
+
+Copy the base address of the register to the Clipboard and notice that
+the additional offset 0x608 needs to be added to the base to get the
+complete register address.
+
+Go back to the debugger, and open the additional memory view called
+Symbolic Memory to set bit-5 in the clock-gating register, while
+simultaneously watching the GPIO-F start address in the original memory
+view.
+
+Paste the clock-gating register base address from the datasheet to the
+symbolic memory view and don't forget to add to it the 0x608 offset.
+
+Now, go to the highlighted clock-gating register and edit it's value to
+set bit-5, which, as you remember from lesson 1 about counting is 20
+hexadecimal. Hit enter.
+
+Hey, the GPIO-F hardware block wakes up!
+
+You are getting really close to being able to blink the LED, but you are
+not quite there yet. As you should read it in the GPIO section of the
+datasheet, you still need to configure the GPIO-F bits 1, 2, and 3,
+which drive Red, Blue, and Red colors, respectively, as digital outputs.
+
+To set the pins direction as output, scroll down within the GPIO-F
+address block to the address 0x40025400 and set the bits 1, 2, and 3 to
+1, which corresponds to 1110 in binary, and E in hex.
+
+Additionally, to set the function for the pins as digital output, scroll
+further down within the GPIO-F address block to the address 0x4002551C
+and again set the bits 1, 2, and 3 to 1.
+
+So, finally, you can try to control the LED. You do this throughout the
+GPIO-F Data register located at 0x400253FC.
+
+Scroll up to this register, and first set just the bit 1, by writing
+hex-2 to the lowest nibble, again remembering that the bits are always
+counted from 0.
+
+Hey, it worked! The red LED lights up. You should give yourself a big
+pat on the back.
+
+Try to turn the LED off by writing 0. Cool.
+
+How about setting bit 2, by writing hex 4. Wow, the LED turned blue--you
+are rocking.
+
+How about setting bit 3, by writing hex 8. You got it too.
+
+The heavy-lifting is really over, because coding this all up in C will
+be a piece of cake. All there is to controlling the LED boils down to
+writing numbers to specific memory addresses and this you already know
+how to do with pointers. Specifically, you are going to use the
+pointer-hack that I showed you at the end of lesson-3, because this
+technique allows you to write any number to any memory address you choose.
+
+Clean the code up to leave only the pointer stuff.
+
+Actually, you won't even need the separate pointer variable, because you
+can de-reference the pointer-cast, as you will see in a minute.
+
+In lesson-3 you used pointers to int. But ARM registers are unsigned, so
+change the pointer type to unsigned int.
+
+Replace the fabricated address from lesson-3 with the address of the
+clock-gating system register that you used to turn the GPIO-F block on.
+
+Enclose the whole pointer cast in parentheses and notice that this whole
+thing is a pointer to unsigned int. If so, then you should be able to
+de-reference this pointer by means fo the star operator, just as you see
+in the line below.
+
+Now, you can write to the pointer. As you recall from the experiment in
+the debugger, you need to set bit 5, that is hex 20 into this register.
+The value should be unsigned, which you indicate by the U suffix.
+
+Get rid of the no longer used p_int pointer and check if the compiler
+likes your code by pressing F7
+
+All right, so you now can press on with the next register, which was the
+GPIO-F pin-direction register, where you need to set bits 1, 2, and 3 by
+writing hex-E.
+
+Finally, the GPIO-E configuration requires also setting bits 1,2, and 3
+in the digital-function register.
+
+With this done, you can turn the red-color LED on and off by setting and
+clearing bit 1, in the GPIO-F data register.
+
+Actually, if you want to really blink the LED, you can't turn it on and
+off just once, but you need to keep doing this forever. To do this, you
+can wrap a while loop around the code for turning the LED on and off.
+The constant 1 in place of the condition means that the condition is
+always true, so the loop runs forever.
+
+When you compile this code, you get a warning that the return statement
+downstream from the endless while is unreachable, which is true.
+
+Let's test this code on the Launchpad board.
+
+Note that setting the clock-gating register wakes up the GPIO-F block,
+as expected.
+
+Here you see that the red LED lights up
+
+And now it goes dark again
+
+The endless loop also seems to be working.
+
+Well, if everything looks so good, let's run the code at full speed by
+pressing the Go button.
+
+What the heck, the LED stays on all the time.
+
+Let's break into the code by pressing the Break button and single-step
+again.
+
+This time everything is fine, yet when you run at full speed the
+blinking stops?
+
+Do you know what's the problem here?
+
+Yes, you are right, the program just runs too fast fast for a human eye
+to notice the rapid blinking of the LED. We need to slow the program down.
+
+For this, you can use the counting while-loop that you learned in
+lesson-2. A loop like this wastes a lot of CPU cycles, but the delay can
+be controlled by setting the upper limit in the condition of the while.
+
+Note that you need a delay both after turning the LED on and after
+turning it off again.
+
+OK, so let's give it a try.
+
+This concludes the lesson about blinking an LED. Even though it might
+not seem like much, this is a very significant milestone in your
+embedded career. So congratulations!
+
+In the next lesson you will learn how to improve the blinky program by
+using the C pre-processor and the volatile keyword.
+
+If you like this channel, please subscribe to stay tuned. You can also
+visit state-machine.com/quickstart for the class notes and project file
+downloads.
+
+---
+Course web-page:
+http://www.state-machine.com/quickstart
+
+YouTube playlist of the course:
+http://www.youtube.com/playlist?list=PLPW8O6W-1chwyTzI3BHwBLbGQoPFxPAPM
+

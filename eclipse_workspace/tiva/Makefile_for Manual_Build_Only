@@ -1,0 +1,41 @@
+CC = arm-none-eabi-gcc
+MACH = cortex-m4
+MCU = TM4C123GH6PM
+CFLAGS  = -c -mcpu=$(MACH) -mthumb -mfloat-abi=hard -mlittle-endian -mfpu=fpv4-sp-d16 -std=gnu11 -nostdlib -Wall -O0 --save-temps -D$(MCU)
+LDFLAGS = -mcpu=$(MACH) -mthumb -mfloat-abi=hard -mlittle-endian -mfpu=fpv4-sp-d16 -std=gnu11 -nostdlib -T tm4c123gh6pm.ld -Wl,-Map=final.map
+
+# --save-temps will keep all the intermediate files of the compilation process 
+# Wl,-Map=final.map will generate a .map file which will help in analyzing the final executable file
+# -nostdlib will avoid inclusion of standard c libraries
+# -std=gnu11 will tell the compiler to use GNU version of C11 standard
+# -mfloat-abi=hard tells the compiler that floating point unit to use is hardware FPU
+
+all: startup_tm4c123gh6pm.o led.o main.o final.elf
+
+# $@ stands for target (e.g. main.o)
+# $^ stands for dependency (e.g. main.c)
+# Command to be executed is called as the Recipe (e.g. $(CC) $(CFLAGS) -o $@ $^)
+
+#Target: Dependency
+final.elf: startup_tm4c123gh6pm.o led.o main.o
+	$(CC) $(LDFLAGS) *.o -o final.elf
+
+#Target: Dependency
+startup_tm4c123gh6pm.o: startup_tm4c123gh6pm.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+#Target: Dependency
+led.o: led.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+#Target: Dependency
+main.o: main.c
+	$(CC) $(CFLAGS) -o $@ $^
+
+#Target: <no dependency>
+clean:
+	rm -rf *.o *.i *.s *.map *.elf
+
+load: final.elf
+	openocd -f board/ek-tm4c123gxl.cfg
+

@@ -1,0 +1,101 @@
+#include "led.h"
+
+void led_apb_dir(gpio_dir dir, uint8_t pin)
+{
+    if (dir == OUTPUT)
+    {
+        GPIOF->DIR |= pin;
+    }
+    else
+    {
+        GPIOF->DIR &= ~(pin);
+    }
+}
+
+void led_apb_dig_en(gpio_dig en, uint8_t pin)
+{
+    if (en == ENABLE)
+    {
+        GPIOF->DEN |= pin;
+    }
+    else
+    {
+        GPIOF->DEN &= ~(pin);
+    }
+}
+
+void led_apb_on(uint8_t pin)
+{
+    GPIOF->DATA |= pin;
+
+	/* The below is the way to use atomic Write. The atomic write makes use
+	 * of initial 256 registers (0-255) with each 32-bit register for 1 bit
+	 * modification (8pins * 32 = 256) */
+    // *((volatile unsigned int *)(0x40025000 + (pin << 2))) = pin;
+}
+
+void led_apb_off(uint8_t pin)
+{
+    GPIOF->DATA &= ~(pin);
+
+    /* The below is the way to use atomic Write. The atomic write makes use
+     * of initial 256 registers (0-255) with each 32-bit register for 1 bit
+     * modification (8pins * 32 = 256) */
+    // *((volatile unsigned int *)(0x40025000 + (pin << 2))) = pin;
+}
+
+void led_apb_off_all(void)
+{
+    GPIOF->DATA &= ~(L_RED|L_BLUE|L_GREEN);
+}
+
+
+/* AHB */
+void led_ahb_dir(gpio_dir dir, uint8_t pin)
+{
+    if (dir == OUTPUT)
+    {
+        GPIOF_AHB->DIR |= pin;
+    }
+    else
+    {
+        GPIOF_AHB->DIR &= ~(pin);
+    }
+}
+
+void led_apb_dig_en(gpio_dig en, uint8_t pin)
+{
+    if (en == ENABLE)
+    {
+        GPIOF->DEN |= pin;
+    }
+    else
+    {
+        GPIOF->DEN &= ~(pin);
+    }
+}
+
+void led_apb_on(uint8_t pin)
+{
+    GPIOF->DATA |= pin;
+
+	/* The below is the way to use atomic Write. The atomic write makes use
+	 * of initial 256 registers (0-255) with each 32-bit register for 1 bit
+	 * modification (8pins * 32 = 256) */
+    // *((volatile unsigned int *)(0x40025000 + (pin << 2))) = pin;
+}
+
+void led_apb_off(uint8_t pin)
+{
+    GPIOF->DATA &= ~(pin);
+
+    /* The below is the way to use atomic Write. The atomic write makes use
+     * of initial 256 registers (0-255) with each 32-bit register for 1 bit
+     * modification (8pins * 32 = 256) */
+    // *((volatile unsigned int *)(0x40025000 + (pin << 2))) = pin;
+}
+
+void led_apb_off_all(void)
+{
+    GPIOF->DATA &= ~(L_RED|L_BLUE|L_GREEN);
+}
