@@ -8,6 +8,6 @@ org.eclipse.launchbar.core.descriptorType.default\:New_configuration/activeLaunc
 org.eclipse.launchbar.core.descriptorType.default\:New_configuration/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
 org.eclipse.launchbar.core.descriptorType.default\:axaa\ Debug/activeLaunchMode=debug
 org.eclipse.launchbar.core.descriptorType.default\:axaa\ Debug/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
-org.eclipse.launchbar.core.descriptorType.default\:tiva\ Debug/activeLaunchMode=debug
+org.eclipse.launchbar.core.descriptorType.default\:tiva\ Debug/activeLaunchMode=run
 org.eclipse.launchbar.core.descriptorType.default\:tiva\ Debug/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
 org.eclipse.launchbar.core.descriptorType.default\:tiva\ Release/activeLaunchMode=debug

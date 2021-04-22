@@ -1,11 +1,11 @@
-16:47:26 **** Incremental Build of configuration Debug for project tiva ****
+17:11:22 **** Incremental Build of configuration Debug for project tiva ****
 make all 
 Invoking: GNU Arm Cross Print Size
 arm-none-eabi-size --format=berkeley "tiva.elf"
    text	   data	    bss	    dec	    hex	filename
-   2680	      8	      0	   2688	    a80	tiva.elf
+   2896	      8	      0	   2904	    b58	tiva.elf
 Finished building: tiva.siz
  
 
-16:47:27 Build Finished. 0 errors, 0 warnings. (took 126ms)
+17:11:22 Build Finished. 0 errors, 0 warnings. (took 129ms)
 

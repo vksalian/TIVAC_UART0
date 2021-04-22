@@ -19,9 +19,3 @@ void SysTick_Handler(void)
         led_apb_toggle(ATOMIC, L_RED);
 #endif
 }
-
-__attribute__((naked)) void assert_failed (char const *file, int line) {
-    /* TBD: damage control */
-    NVIC_SystemReset(); /* reset the system */
-}
-

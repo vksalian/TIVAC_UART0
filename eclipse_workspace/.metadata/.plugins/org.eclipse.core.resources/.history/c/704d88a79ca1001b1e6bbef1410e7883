@@ -59,9 +59,6 @@ int main (void)
 	/* Note: Always check if the SysTick->LOAD is not exceeding / overflowing
 	   the 24-bit size. */
 
-	/* Enable Interrupts */
-	__enable_irq();
-
     /* Forever Loop */
     while(1)
     {

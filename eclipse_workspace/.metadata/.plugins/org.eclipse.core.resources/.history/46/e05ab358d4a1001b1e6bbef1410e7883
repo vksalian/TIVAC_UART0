@@ -11,7 +11,7 @@
 /* This function will override the weak function */
 void SysTick_Handler(void)
 {
-#if USE_AHB
+#ifndef USE_AHB
         /* Toggle RED LED */
         led_ahb_toggle(ATOMIC, L_RED);
 #else

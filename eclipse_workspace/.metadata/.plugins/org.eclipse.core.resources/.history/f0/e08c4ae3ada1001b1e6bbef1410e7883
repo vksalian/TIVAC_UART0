@@ -8,6 +8,21 @@
 #include "bsp.h"
 #include "led.h"
 
+
+/* This function will override the weak function */
+void HardFault_Handler(void)
+{
+	/* TODO : Safely Handle the faults without forever loop */
+    while(1);
+}
+
+/* This function will override the weak function */
+void NMI_Handler(void)
+{
+	/* TODO : Safely Handle the faults without forever loop */
+    while(1);
+}
+
 /* This function will override the weak function */
 void SysTick_Handler(void)
 {
@@ -19,9 +34,3 @@ void SysTick_Handler(void)
         led_apb_toggle(ATOMIC, L_RED);
 #endif
 }
-
-__attribute__((naked)) void assert_failed (char const *file, int line) {
-    /* TBD: damage control */
-    NVIC_SystemReset(); /* reset the system */
-}
-
