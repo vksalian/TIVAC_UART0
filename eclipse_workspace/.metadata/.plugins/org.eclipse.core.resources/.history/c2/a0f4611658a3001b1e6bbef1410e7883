@@ -1,0 +1,41 @@
+#include <stdint.h>
+#include "bsp.h"
+
+uint32_t dummy = 100;
+
+void soft_delay(uint32_t n);
+
+int main (void)
+{
+    /* BSP_Init */
+	BSP_init();
+
+    /* Forever Loop */
+    while(1)
+    {
+#if USE_AHB
+        /* ON GREEN LED */
+        led_ahb_on(ATOMIC, L_GREEN);
+
+        /* OFF GREEN LED */
+        led_ahb_on(ATOMIC, L_GREEN);
+#else
+        /* ON GREEN LED */
+        led_apb_on(ATOMIC, L_GREEN);
+
+        /* OFF GREEN LED */
+        led_apb_off(ATOMIC, L_GREEN);
+
+#endif
+    }
+}
+
+void soft_delay(uint32_t n)
+{
+    for (uint32_t i = 0; i < n; i++)
+    {
+        ;
+    }
+}
+
+

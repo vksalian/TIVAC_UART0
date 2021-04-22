@@ -5,21 +5,18 @@
 # Add inputs and outputs from these tool invocations to the build variables 
 C_SRCS += \
 ../bsp.c \
-../led.c \
 ../main.c \
 ../startup_TM4C123.c \
 ../system_TM4C123.c 
 
 OBJS += \
 ./bsp.o \
-./led.o \
 ./main.o \
 ./startup_TM4C123.o \
 ./system_TM4C123.o 
 
 C_DEPS += \
 ./bsp.d \
-./led.d \
 ./main.d \
 ./startup_TM4C123.d \
 ./system_TM4C123.d 
