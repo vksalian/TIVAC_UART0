@@ -58,7 +58,7 @@ int main (void)
 			ON_STATE = 2
 		}state = INITIAL;
 
-		static uint32_t start;
+		volatile static uint32_t start;
 
 		switch(state)
 		{

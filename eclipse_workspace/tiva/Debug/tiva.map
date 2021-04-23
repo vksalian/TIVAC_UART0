@@ -102,7 +102,7 @@ LOAD ./main.o
 LOAD ./startup_TM4C123.o
 LOAD ./system_TM4C123.o
 
-.text           0x0000000000000000      0xbd0
+.text           0x0000000000000000      0xc44
  *(.isr_vector)
  .isr_vector    0x0000000000000000      0x26c ./startup_TM4C123.o
                 0x0000000000000000                vectors
@@ -169,142 +169,143 @@ LOAD ./system_TM4C123.o
  .text.assert_failed
                 0x00000000000006fc        0x6 ./bsp.o
                 0x00000000000006fc                assert_failed
- .text.main     0x0000000000000702       0x26 ./main.o
-                0x0000000000000702                main
+ *fill*         0x0000000000000702        0x2 
+ .text.main     0x0000000000000704       0x98 ./main.o
+                0x0000000000000704                main
  .text.Reset_Handler
-                0x0000000000000728       0xa0 ./startup_TM4C123.o
-                0x0000000000000728                Reset_Handler
+                0x000000000000079c       0xa0 ./startup_TM4C123.o
+                0x000000000000079c                Reset_Handler
  .text.NMI_Handler
-                0x00000000000007c8       0x18 ./startup_TM4C123.o
-                0x00000000000007c8                NMI_Handler
+                0x000000000000083c       0x18 ./startup_TM4C123.o
+                0x000000000000083c                NMI_Handler
  .text.MemManage_Handler
-                0x00000000000007e0       0x1c ./startup_TM4C123.o
-                0x00000000000007e0                MemManage_Handler
- .text.HardFault_Handler
-                0x00000000000007fc       0x1c ./startup_TM4C123.o
-                0x00000000000007fc                HardFault_Handler
- .text.BusFault_Handler
-                0x0000000000000818       0x1c ./startup_TM4C123.o
-                0x0000000000000818                BusFault_Handler
- .text.UsageFault_Handler
-                0x0000000000000834       0x20 ./startup_TM4C123.o
-                0x0000000000000834                UsageFault_Handler
- .text.Default_Handler
                 0x0000000000000854       0x1c ./startup_TM4C123.o
-                0x0000000000000854                FLASH_Handler
-                0x0000000000000854                TIMER5B_Handler
-                0x0000000000000854                DebugMon_Handler
-                0x0000000000000854                UART3_Handler
-                0x0000000000000854                I2C0_Handler
-                0x0000000000000854                PWM1_2_Handler
-                0x0000000000000854                UART2_Handler
-                0x0000000000000854                I2C1_Handler
-                0x0000000000000854                PendSV_Handler
-                0x0000000000000854                TIMER2B_Handler
-                0x0000000000000854                WTIMER1A_Handler
-                0x0000000000000854                PWM0_3_Handler
-                0x0000000000000854                USB0_Handler
-                0x0000000000000854                WTIMER2B_Handler
-                0x0000000000000854                SSI1_Handler
-                0x0000000000000854                COMP0_Handler
-                0x0000000000000854                ADC0SS0_Handler
-                0x0000000000000854                ADC1SS3_Handler
-                0x0000000000000854                ADC1SS2_Handler
-                0x0000000000000854                TIMER1B_Handler
-                0x0000000000000854                PWM1_1_Handler
-                0x0000000000000854                WTIMER2A_Handler
-                0x0000000000000854                ADC0SS3_Handler
-                0x0000000000000854                WDT_Handler
-                0x0000000000000854                CAN0_Handler
-                0x0000000000000854                PWM0_1_Handler
-                0x0000000000000854                UART1_Handler
-                0x0000000000000854                SSI2_Handler
-                0x0000000000000854                GPIOF_Handler
-                0x0000000000000854                ADC0SS1_Handler
-                0x0000000000000854                UDMAERR_Handler
-                0x0000000000000854                GPIOD_Handler
-                0x0000000000000854                SSI3_Handler
-                0x0000000000000854                PWM1_FAULT_Handler
-                0x0000000000000854                GPIOE_Handler
-                0x0000000000000854                ADC1SS1_Handler
-                0x0000000000000854                GPIOC_Handler
-                0x0000000000000854                UART4_Handler
-                0x0000000000000854                TIMER1A_Handler
-                0x0000000000000854                UART6_Handler
-                0x0000000000000854                Default_Handler
-                0x0000000000000854                GPIOA_Handler
-                0x0000000000000854                TIMER2A_Handler
-                0x0000000000000854                PMW1_0_Handler
-                0x0000000000000854                PMW0_FAULT_Handler
-                0x0000000000000854                UDMA_Handler
-                0x0000000000000854                WTIMER3B_Handler
-                0x0000000000000854                TIMER4B_Handler
-                0x0000000000000854                WTIMER0B_Handler
-                0x0000000000000854                CAN1_Handler
-                0x0000000000000854                UART7_Handler
-                0x0000000000000854                I2C2_Handler
-                0x0000000000000854                SVC_Handler
-                0x0000000000000854                QEI0_Handler
-                0x0000000000000854                GPIOB_Handler
-                0x0000000000000854                SYSCTL_Handler
-                0x0000000000000854                TIMER0B_Handler
-                0x0000000000000854                QEI1_Handler
-                0x0000000000000854                WTIMER1B_Handler
-                0x0000000000000854                TIMER4A_Handler
-                0x0000000000000854                TIMER3A_Handler
-                0x0000000000000854                ADC0SS2_Handler
-                0x0000000000000854                PWM1_3_Handler
-                0x0000000000000854                WTIMER0A_Handler
-                0x0000000000000854                TIMER5A_Handler
-                0x0000000000000854                WTIMER5B_Handler
-                0x0000000000000854                UART5_Handler
-                0x0000000000000854                UART0_Handler
-                0x0000000000000854                PWM0_0_Handler
-                0x0000000000000854                I2C3_Handler
-                0x0000000000000854                ADC1SS0_Handler
-                0x0000000000000854                TIMER3B_Handler
-                0x0000000000000854                WTIMER5A_Handler
-                0x0000000000000854                SSI0_Handler
-                0x0000000000000854                FPU_Handler
-                0x0000000000000854                COMP1_Handler
-                0x0000000000000854                TIMER0A_Handler
-                0x0000000000000854                WTIMER3A_Handler
-                0x0000000000000854                WTIMER4A_Handler
-                0x0000000000000854                HIB_Handler
-                0x0000000000000854                PWM0_2_Handler
-                0x0000000000000854                WTIMER4B_Handler
+                0x0000000000000854                MemManage_Handler
+ .text.HardFault_Handler
+                0x0000000000000870       0x1c ./startup_TM4C123.o
+                0x0000000000000870                HardFault_Handler
+ .text.BusFault_Handler
+                0x000000000000088c       0x1c ./startup_TM4C123.o
+                0x000000000000088c                BusFault_Handler
+ .text.UsageFault_Handler
+                0x00000000000008a8       0x20 ./startup_TM4C123.o
+                0x00000000000008a8                UsageFault_Handler
+ .text.Default_Handler
+                0x00000000000008c8       0x1c ./startup_TM4C123.o
+                0x00000000000008c8                FLASH_Handler
+                0x00000000000008c8                TIMER5B_Handler
+                0x00000000000008c8                DebugMon_Handler
+                0x00000000000008c8                UART3_Handler
+                0x00000000000008c8                I2C0_Handler
+                0x00000000000008c8                PWM1_2_Handler
+                0x00000000000008c8                UART2_Handler
+                0x00000000000008c8                I2C1_Handler
+                0x00000000000008c8                PendSV_Handler
+                0x00000000000008c8                TIMER2B_Handler
+                0x00000000000008c8                WTIMER1A_Handler
+                0x00000000000008c8                PWM0_3_Handler
+                0x00000000000008c8                USB0_Handler
+                0x00000000000008c8                WTIMER2B_Handler
+                0x00000000000008c8                SSI1_Handler
+                0x00000000000008c8                COMP0_Handler
+                0x00000000000008c8                ADC0SS0_Handler
+                0x00000000000008c8                ADC1SS3_Handler
+                0x00000000000008c8                ADC1SS2_Handler
+                0x00000000000008c8                TIMER1B_Handler
+                0x00000000000008c8                PWM1_1_Handler
+                0x00000000000008c8                WTIMER2A_Handler
+                0x00000000000008c8                ADC0SS3_Handler
+                0x00000000000008c8                WDT_Handler
+                0x00000000000008c8                CAN0_Handler
+                0x00000000000008c8                PWM0_1_Handler
+                0x00000000000008c8                UART1_Handler
+                0x00000000000008c8                SSI2_Handler
+                0x00000000000008c8                GPIOF_Handler
+                0x00000000000008c8                ADC0SS1_Handler
+                0x00000000000008c8                UDMAERR_Handler
+                0x00000000000008c8                GPIOD_Handler
+                0x00000000000008c8                SSI3_Handler
+                0x00000000000008c8                PWM1_FAULT_Handler
+                0x00000000000008c8                GPIOE_Handler
+                0x00000000000008c8                ADC1SS1_Handler
+                0x00000000000008c8                GPIOC_Handler
+                0x00000000000008c8                UART4_Handler
+                0x00000000000008c8                TIMER1A_Handler
+                0x00000000000008c8                UART6_Handler
+                0x00000000000008c8                Default_Handler
+                0x00000000000008c8                GPIOA_Handler
+                0x00000000000008c8                TIMER2A_Handler
+                0x00000000000008c8                PMW1_0_Handler
+                0x00000000000008c8                PMW0_FAULT_Handler
+                0x00000000000008c8                UDMA_Handler
+                0x00000000000008c8                WTIMER3B_Handler
+                0x00000000000008c8                TIMER4B_Handler
+                0x00000000000008c8                WTIMER0B_Handler
+                0x00000000000008c8                CAN1_Handler
+                0x00000000000008c8                UART7_Handler
+                0x00000000000008c8                I2C2_Handler
+                0x00000000000008c8                SVC_Handler
+                0x00000000000008c8                QEI0_Handler
+                0x00000000000008c8                GPIOB_Handler
+                0x00000000000008c8                SYSCTL_Handler
+                0x00000000000008c8                TIMER0B_Handler
+                0x00000000000008c8                QEI1_Handler
+                0x00000000000008c8                WTIMER1B_Handler
+                0x00000000000008c8                TIMER4A_Handler
+                0x00000000000008c8                TIMER3A_Handler
+                0x00000000000008c8                ADC0SS2_Handler
+                0x00000000000008c8                PWM1_3_Handler
+                0x00000000000008c8                WTIMER0A_Handler
+                0x00000000000008c8                TIMER5A_Handler
+                0x00000000000008c8                WTIMER5B_Handler
+                0x00000000000008c8                UART5_Handler
+                0x00000000000008c8                UART0_Handler
+                0x00000000000008c8                PWM0_0_Handler
+                0x00000000000008c8                I2C3_Handler
+                0x00000000000008c8                ADC1SS0_Handler
+                0x00000000000008c8                TIMER3B_Handler
+                0x00000000000008c8                WTIMER5A_Handler
+                0x00000000000008c8                SSI0_Handler
+                0x00000000000008c8                FPU_Handler
+                0x00000000000008c8                COMP1_Handler
+                0x00000000000008c8                TIMER0A_Handler
+                0x00000000000008c8                WTIMER3A_Handler
+                0x00000000000008c8                WTIMER4A_Handler
+                0x00000000000008c8                HIB_Handler
+                0x00000000000008c8                PWM0_2_Handler
+                0x00000000000008c8                WTIMER4B_Handler
  .text.getOscClk
-                0x0000000000000870      0x194 ./system_TM4C123.o
+                0x00000000000008e4      0x194 ./system_TM4C123.o
  .text.SystemCoreClockUpdate
-                0x0000000000000a04      0x118 ./system_TM4C123.o
-                0x0000000000000a04                SystemCoreClockUpdate
+                0x0000000000000a78      0x118 ./system_TM4C123.o
+                0x0000000000000a78                SystemCoreClockUpdate
  .text.SystemInit
-                0x0000000000000b1c       0xb4 ./system_TM4C123.o
-                0x0000000000000b1c                SystemInit
+                0x0000000000000b90       0xb4 ./system_TM4C123.o
+                0x0000000000000b90                SystemInit
  *(.rodata)
  *(.rodata.*)
-                0x0000000000000bd0                . = ALIGN (0x4)
-                0x0000000000000bd0                _e_text = .
+                0x0000000000000c44                . = ALIGN (0x4)
+                0x0000000000000c44                _e_text = .
 
-.glue_7         0x0000000000000bd0        0x0
- .glue_7        0x0000000000000bd0        0x0 linker stubs
+.glue_7         0x0000000000000c44        0x0
+ .glue_7        0x0000000000000c44        0x0 linker stubs
 
-.glue_7t        0x0000000000000bd0        0x0
- .glue_7t       0x0000000000000bd0        0x0 linker stubs
+.glue_7t        0x0000000000000c44        0x0
+ .glue_7t       0x0000000000000c44        0x0 linker stubs
 
-.vfp11_veneer   0x0000000000000bd0        0x0
- .vfp11_veneer  0x0000000000000bd0        0x0 linker stubs
+.vfp11_veneer   0x0000000000000c44        0x0
+ .vfp11_veneer  0x0000000000000c44        0x0 linker stubs
 
-.v4_bx          0x0000000000000bd0        0x0
- .v4_bx         0x0000000000000bd0        0x0 linker stubs
+.v4_bx          0x0000000000000c44        0x0
+ .v4_bx         0x0000000000000c44        0x0 linker stubs
 
-.iplt           0x0000000000000bd0        0x0
- .iplt          0x0000000000000bd0        0x0 ./bsp.o
+.iplt           0x0000000000000c44        0x0
+ .iplt          0x0000000000000c44        0x0 ./bsp.o
 
-.rel.dyn        0x0000000000000bd0        0x0
- .rel.iplt      0x0000000000000bd0        0x0 ./bsp.o
+.rel.dyn        0x0000000000000c44        0x0
+ .rel.iplt      0x0000000000000c44        0x0 ./bsp.o
 
-.data           0x0000000020000000        0x4 load address 0x0000000000000bd0
+.data           0x0000000020000000        0x4 load address 0x0000000000000c44
                 0x0000000020000000                _s_data = .
  *(.data)
  .data          0x0000000020000000        0x0 ./bsp.o
@@ -318,10 +319,10 @@ LOAD ./system_TM4C123.o
                 0x0000000020000004                . = ALIGN (0x4)
                 0x0000000020000004                _e_data = .
 
-.igot.plt       0x0000000020000004        0x0 load address 0x0000000000000bd4
+.igot.plt       0x0000000020000004        0x0 load address 0x0000000000000c48
  .igot.plt      0x0000000020000004        0x0 ./bsp.o
 
-.bss            0x0000000020000004        0x4 load address 0x0000000000000bd4
+.bss            0x0000000020000004        0xc load address 0x0000000000000c48
                 0x0000000020000004                _s_bss = .
  *(.bss)
  .bss           0x0000000020000004        0x0 ./bsp.o
@@ -331,23 +332,26 @@ LOAD ./system_TM4C123.o
  *(.bss.*)
  .bss.l_tickCtr
                 0x0000000020000004        0x4 ./bsp.o
+ .bss.state.1   0x0000000020000008        0x1 ./main.o
+ *fill*         0x0000000020000009        0x3 
+ .bss.start.0   0x000000002000000c        0x4 ./main.o
  *(COMMON*)
-                0x0000000020000008                . = ALIGN (0x4)
-                0x0000000020000008                _e_bss = .
+                0x0000000020000010                . = ALIGN (0x4)
+                0x0000000020000010                _e_bss = .
 OUTPUT(tiva.elf elf32-littlearm)
 LOAD linker stubs
 
-.debug_info     0x0000000000000000     0x2520
+.debug_info     0x0000000000000000     0x2588
  .debug_info    0x0000000000000000     0x14f4 ./bsp.o
- .debug_info    0x00000000000014f4       0xa5 ./main.o
- .debug_info    0x0000000000001599      0x20e ./startup_TM4C123.o
- .debug_info    0x00000000000017a7      0xd79 ./system_TM4C123.o
+ .debug_info    0x00000000000014f4      0x10d ./main.o
+ .debug_info    0x0000000000001601      0x20e ./startup_TM4C123.o
+ .debug_info    0x000000000000180f      0xd79 ./system_TM4C123.o
 
-.debug_abbrev   0x0000000000000000      0x52c
+.debug_abbrev   0x0000000000000000      0x568
  .debug_abbrev  0x0000000000000000      0x277 ./bsp.o
- .debug_abbrev  0x0000000000000277       0x67 ./main.o
- .debug_abbrev  0x00000000000002de       0xe9 ./startup_TM4C123.o
- .debug_abbrev  0x00000000000003c7      0x165 ./system_TM4C123.o
+ .debug_abbrev  0x0000000000000277       0xa3 ./main.o
+ .debug_abbrev  0x000000000000031a       0xe9 ./startup_TM4C123.o
+ .debug_abbrev  0x0000000000000403      0x165 ./system_TM4C123.o
 
 .debug_aranges  0x0000000000000000      0x150
  .debug_aranges
@@ -385,20 +389,20 @@ LOAD linker stubs
  .debug_macro   0x0000000000002308       0xdb ./startup_TM4C123.o
  .debug_macro   0x00000000000023e3      0x179 ./system_TM4C123.o
 
-.debug_line     0x0000000000000000     0x13b5
+.debug_line     0x0000000000000000     0x13e4
  .debug_line    0x0000000000000000      0x694 ./bsp.o
- .debug_line    0x0000000000000694      0x366 ./main.o
- .debug_line    0x00000000000009fa      0x45b ./startup_TM4C123.o
- .debug_line    0x0000000000000e55      0x560 ./system_TM4C123.o
+ .debug_line    0x0000000000000694      0x395 ./main.o
+ .debug_line    0x0000000000000a29      0x45b ./startup_TM4C123.o
+ .debug_line    0x0000000000000e84      0x560 ./system_TM4C123.o
 
-.debug_str      0x0000000000000000     0xaa40
+.debug_str      0x0000000000000000     0xaa61
  .debug_str     0x0000000000000000     0xa53c ./bsp.o
                                        0xa6f4 (size before relaxing)
- .debug_str     0x000000000000a53c        0xf ./main.o
-                                       0x9e71 (size before relaxing)
- .debug_str     0x000000000000a54b      0x12b ./startup_TM4C123.o
+ .debug_str     0x000000000000a53c       0x30 ./main.o
+                                       0x9eac (size before relaxing)
+ .debug_str     0x000000000000a56c      0x12b ./startup_TM4C123.o
                                        0x9f04 (size before relaxing)
- .debug_str     0x000000000000a676      0x3ca ./system_TM4C123.o
+ .debug_str     0x000000000000a697      0x3ca ./system_TM4C123.o
                                        0xa757 (size before relaxing)
 
 .comment        0x0000000000000000       0x4d
