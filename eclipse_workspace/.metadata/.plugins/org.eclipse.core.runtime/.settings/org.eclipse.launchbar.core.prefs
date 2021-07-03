@@ -2,7 +2,7 @@ LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/arch
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/name=Local
 LaunchTargetManager/org.eclipse.launchbar.core.launchTargetType.local,Local/os=linux
 activeLaunchTarget=null\:---
-configDescList=org.eclipse.launchbar.core.descriptorType.default\:tiva Release,org.eclipse.launchbar.core.descriptorType.default\:New_configuration,org.eclipse.launchbar.core.descriptorType.default\:tiva Debug
+configDescList=org.eclipse.launchbar.core.descriptorType.default\:tiva Release,org.eclipse.launchbar.core.descriptorType.default\:New_configuration,org.eclipse.launchbar.core.descriptorType.default\:tiva Debug,org.eclipse.launchbar.core.descriptorType.default\:tiva-uart5 Debug
 eclipse.preferences.version=1
 org.eclipse.launchbar.core.descriptorType.default\:New_configuration/activeLaunchMode=run
 org.eclipse.launchbar.core.descriptorType.default\:New_configuration/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
@@ -11,3 +11,4 @@ org.eclipse.launchbar.core.descriptorType.default\:axaa\ Debug/activeLaunchTarge
 org.eclipse.launchbar.core.descriptorType.default\:tiva\ Debug/activeLaunchMode=debug
 org.eclipse.launchbar.core.descriptorType.default\:tiva\ Debug/activeLaunchTarget=org.eclipse.launchbar.core.launchTargetType.local\:Local
 org.eclipse.launchbar.core.descriptorType.default\:tiva\ Release/activeLaunchMode=debug
+org.eclipse.launchbar.core.descriptorType.default\:tiva-uart5\ Debug/activeLaunchMode=debug

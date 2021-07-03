@@ -1,13 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <section name="Workbench">
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog">
-		<item key="selection" value="SYSCTL_Type"/>
+		<item key="selection" value="Default_Handler"/>
 		<item key="wrap" value="true"/>
 		<item key="casesensitive" value="false"/>
 		<item key="wholeword" value="false"/>
 		<item key="incremental" value="false"/>
 		<item key="isRegEx" value="false"/>
 		<list key="findhistory">
+			<item value="Default_Handler"/>
+			<item value="SysTick_Handler"/>
+			<item value="NMI_Handler"/>
+			<item value="Reset_Handler"/>
 			<item value="SYSCTL_Type"/>
 			<item value="RCC"/>
 			<item value="#include"/>
@@ -17,8 +21,8 @@
 		</list>
 	</section>
 	<section name="org.eclipse.ui.texteditor.FindReplaceDialog_dialogBounds">
-		<item key="DIALOG_X_ORIGIN" value="51"/>
-		<item key="DIALOG_Y_ORIGIN" value="89"/>
+		<item key="DIALOG_X_ORIGIN" value="0"/>
+		<item key="DIALOG_Y_ORIGIN" value="151"/>
 		<item key="DIALOG_WIDTH" value="342"/>
 		<item key="DIALOG_HEIGHT" value="439"/>
 		<item key="DIALOG_FONT_NAME" value="1|Ubuntu|11.0|0|GTK|1|"/>
