@@ -5,10 +5,17 @@
 #define UART_INTERRUPT 1
 
 /* SPI Buffer Size */
-#define SPI_BUFFER_SIZE (200)
-char Spi_buffer[SPI_BUFFER_SIZE];
-int  Spi_index = 0;
-int  Spi_Command_Count = 0;
+#define SPI_BUFFER_SIZE        (100)
+#define SPI_COMMAND_SIZE_BYTES   (2)
+#define SPI_PROCESS_SIZE        (10)
+
+#define SPI_HEADER              ('A')
+
+char Spi_Buffer[SPI_BUFFER_SIZE];
+int  Spi_BufferFillIndex = 0;
+int  Spi_BufferProcessIndex = 0;
+int  Spi_CommandCount = 0;
+int  BytesRemainingForProcess = 0;
 
 void Delay(unsigned long counter);
 char UART0_Receiver(void);
@@ -16,6 +23,7 @@ void UART0_Transmitter(unsigned char data);
 void printstring(char *str);
 void printchar(char c);
 char *numtostring(unsigned int num, unsigned int base);
+void Spi_ParseCommand(void);
 
 void UART0_Handler( void )
 {
@@ -24,27 +32,26 @@ void UART0_Handler( void )
 	rx_data = UART0->DR ; // get the received data byte
 
 	// SPI
-	if(Spi_index >= SPI_BUFFER_SIZE)
+	if(Spi_BufferFillIndex >= SPI_BUFFER_SIZE)
 	{
-		Spi_index = 0;
+		Spi_BufferFillIndex = 0;
 	}
 
-	printstring("Spi_Index=");
-	printstring(numtostring(Spi_index,10));
-	printstring("\n\r");
-
-	printstring("Received Char Hex=");
+	printstring("[RX] New Byte : ");
+	printstring("Spi_Buffer[");
+	printstring(numtostring(Spi_BufferFillIndex,10));
+	printstring("] Hex = ");
 	printstring(numtostring(rx_data,16));
-	printstring("\n\r");
 
-	Spi_buffer[Spi_index++] = rx_data;
+	Spi_Buffer[Spi_BufferFillIndex++] = rx_data;
+	BytesRemainingForProcess++; /* The bytes remaining to process */
 
 	if(rx_data == 'A')
 		GPIOF->DATA  = 0x02;
 	else if(rx_data == 'B')
 		GPIOF->DATA  = 0x00;
 
-	printstring("Received Char=");
+	printstring(" : Char = ");
 	UART0_Transmitter(rx_data); // send data that is received
 	printstring("\n\r");
 }
@@ -117,13 +124,27 @@ int main(void)
         GPIOF->DIR       |= 0x02; //set GREEN pin as a digital output pin
         GPIOF->DEN       |= 0x02;  // Enable PF3 pin as a digital pin
 
-	  Delay(1);
-	printstring("Enter Command:\n");
+	  Delay(10);
+	  Spi_BufferFillIndex = 0;
+	  Spi_BufferProcessIndex = 0;
+	  Spi_CommandCount = 0;
+	  BytesRemainingForProcess = 0;
+
+	printstring("\n\rEnter Characters:\n\r");
 	Delay(10);
 	while(1)
 	{
-		Delay(10);
-		printstring("\n\rIn Main Loop\r\n");
+		Delay(1000);
+		// printstring("\n\rIn Main Loop\r\n");
+
+		/* If there are sufficient bytes available for processing */
+		if(BytesRemainingForProcess >= SPI_PROCESS_SIZE)
+		{
+			/* Most probably, you have the full command */
+			printstring("\n\rFull Command is there probably\r\n");
+
+			Spi_ParseCommand();
+		}
 	}
 #endif
 }
@@ -178,6 +199,54 @@ char *numtostring(unsigned int num, unsigned int base)
 	}while(num != 0);
 
 	return(ptr);
+}
+
+void Spi_ParseCommand(void)
+{
+	uint8_t header_detected = 0;
+
+	__disable_irq();
+
+	while(BytesRemainingForProcess >= SPI_COMMAND_SIZE_BYTES)
+	{
+		// SPI
+		if(Spi_BufferProcessIndex >= SPI_BUFFER_SIZE)
+		{
+			Spi_BufferProcessIndex = 0;
+		}
+
+		if(Spi_Buffer[Spi_BufferProcessIndex] == SPI_HEADER)
+		{
+			printstring("[PR] Process  : ");
+			printstring("Spi_Buffer[");
+			printstring(numtostring(Spi_BufferProcessIndex,10));
+			printstring("] Hex = ");
+			printstring(numtostring(Spi_Buffer[Spi_BufferProcessIndex],16));
+			printstring(" : Char = ");
+			UART0_Transmitter(Spi_Buffer[Spi_BufferProcessIndex]); // send data that is received
+			printstring(" : Header Detected\n\r");
+
+			header_detected = 1;
+			Spi_BufferProcessIndex++;
+			BytesRemainingForProcess--;
+		}
+		else
+		{
+			printstring("[PR] Process  : ");
+			printstring("Spi_Buffer[");
+			printstring(numtostring(Spi_BufferProcessIndex,10));
+			printstring("] Hex = ");
+			printstring(numtostring(Spi_Buffer[Spi_BufferProcessIndex],16));
+			printstring(" : Char = ");
+						UART0_Transmitter(Spi_Buffer[Spi_BufferProcessIndex]); // send data that is received
+			printstring(" : Not Header\n\r");
+
+			Spi_BufferProcessIndex++;
+			BytesRemainingForProcess--;
+		}
+	}
+
+	__enable_irq();
 }
 //void SystemInit(void)
 //{
