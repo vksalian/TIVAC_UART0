@@ -5091,3 +5091,367 @@ java.lang.InterruptedException
 
 !ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 11:13:02.859
 !MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.ui 4 0 2021-07-04 11:56:04.001
+!MESSAGE Unhandled event loop exception
+!STACK 0
+java.lang.NullPointerException
+
+!ENTRY org.eclipse.debug.ui 4 120 2021-07-04 13:00:39.383
+!MESSAGE Error logged from Debug UI: 
+!STACK 0
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.FutureTask.awaitDone(FutureTask.java:418)
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:203)
+	at org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager.runInUIThreadWithTimeout(SelectedResourceManager.java:262)
+	at org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager.getFromUI(SelectedResourceManager.java:240)
+	at org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager.getActiveWindow(SelectedResourceManager.java:231)
+	at org.eclipse.debug.ui.DebugUITools.getDebugContext(DebugUITools.java:247)
+	at org.eclipse.cdt.debug.internal.ui.editors.DelegatingDebugTextHover.getDelegate(DelegatingDebugTextHover.java:99)
+	at org.eclipse.cdt.debug.internal.ui.editors.DelegatingDebugTextHover.getHoverInfo2(DelegatingDebugTextHover.java:68)
+	at org.eclipse.cdt.internal.ui.text.c.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:149)
+	at org.eclipse.cdt.internal.ui.text.c.hover.CEditorTextHoverProxy.getHoverInfo2(CEditorTextHoverProxy.java:85)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.cdt.dsf.gdb 4 104 2021-07-04 14:27:11.891
+!MESSAGE Program file does not exist
+!STACK 0
+java.io.FileNotFoundException: /home/vksalian/Desktop/Practice_2021/UART_TIVAC/eclipse_workspace/tiva-uart5/Debug/tiva-uart5.elf not found
+	at org.eclipse.cdt.dsf.gdb.launching.LaunchUtils.verifyProgramPath(LaunchUtils.java:131)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.checkBinaryDetails(GdbLaunchDelegate.java:329)
+	at org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate.checkBinaryDetails(LaunchConfigurationDelegate.java:502)
+	at org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate.launchDebugSession(LaunchConfigurationDelegate.java:225)
+	at org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate.launchDebugger(LaunchConfigurationDelegate.java:176)
+	at org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate.launch(LaunchConfigurationDelegate.java:152)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:807)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:718)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1021)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$2.run(DebugUIPlugin.java:1224)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 104 2021-07-04 14:27:11.923
+!MESSAGE /home/vksalian/Desktop/Practice_2021/UART_TIVAC/eclipse_workspace/tiva-uart5/Debug/tiva-uart5.elf not found
+!STACK 0
+java.io.FileNotFoundException: /home/vksalian/Desktop/Practice_2021/UART_TIVAC/eclipse_workspace/tiva-uart5/Debug/tiva-uart5.elf not found
+	at org.eclipse.cdt.dsf.gdb.launching.LaunchUtils.verifyProgramPath(LaunchUtils.java:131)
+	at org.eclipse.cdt.dsf.gdb.launching.GdbLaunchDelegate.checkBinaryDetails(GdbLaunchDelegate.java:329)
+	at org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate.checkBinaryDetails(LaunchConfigurationDelegate.java:502)
+	at org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate.launchDebugSession(LaunchConfigurationDelegate.java:225)
+	at org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate.launchDebugger(LaunchConfigurationDelegate.java:176)
+	at org.eclipse.embedcdt.debug.gdbjtag.openocd.core.dsf.LaunchConfigurationDelegate.launch(LaunchConfigurationDelegate.java:152)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:807)
+	at org.eclipse.debug.internal.core.LaunchConfiguration.launch(LaunchConfiguration.java:718)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin.buildAndLaunch(DebugUIPlugin.java:1021)
+	at org.eclipse.debug.internal.ui.DebugUIPlugin$2.run(DebugUIPlugin.java:1224)
+	at org.eclipse.core.internal.jobs.Worker.run(Worker.java:63)
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:29:31.045
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:29:31.512
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.debug.gdbjtag.core 4 0 2021-07-04 14:35:52.658
+!MESSAGE Debug session 'tiva-uart5 Debug' already started. Terminate the first one before restarting.
+
+!ENTRY org.eclipse.embedcdt.debug.gdbjtag.core 4 0 2021-07-04 14:36:16.549
+!MESSAGE Debug session 'tiva-uart5 Debug' already started. Terminate the first one before restarting.
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:36:25.577
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:36:25.701
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:37:22.385
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:37:22.502
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.debug.ui 4 120 2021-07-04 14:37:23.320
+!MESSAGE Error logged from Debug UI: 
+!STACK 0
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.FutureTask.awaitDone(FutureTask.java:418)
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:203)
+	at org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager.runInUIThreadWithTimeout(SelectedResourceManager.java:262)
+	at org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager.getFromUI(SelectedResourceManager.java:240)
+	at org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager.getActiveWindow(SelectedResourceManager.java:231)
+	at org.eclipse.debug.ui.DebugUITools.getDebugContext(DebugUITools.java:247)
+	at org.eclipse.cdt.debug.internal.ui.editors.DelegatingDebugTextHover.getDelegate(DelegatingDebugTextHover.java:99)
+	at org.eclipse.cdt.debug.internal.ui.editors.DelegatingDebugTextHover.getHoverInfo2(DelegatingDebugTextHover.java:68)
+	at org.eclipse.cdt.internal.ui.text.c.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:149)
+	at org.eclipse.cdt.internal.ui.text.c.hover.CEditorTextHoverProxy.getHoverInfo2(CEditorTextHoverProxy.java:85)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:38:07.521
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:38:07.646
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:39:48.736
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:39:48.843
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.621
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@26d7c276): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.622
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@6dbaaccd): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.623
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@18b15354): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.624
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@6d2192e3): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.625
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@62400560): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.626
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@2dc9921b): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.627
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@2f305a9d): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.627
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@5645120b): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.628
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@66acd797): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.629
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@2b939965): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.630
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@2c5193d3): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.630
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@3a84493f): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.631
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@24a2144c): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.632
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@4a20730): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.633
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@60986081): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.633
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@490d08a): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.634
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@9a293b8): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.635
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@52f31e88): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.636
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@2063b475): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:41.636
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@391c812f): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 14:40:46.936
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.mi.service.MIRunControl$9@217c5fe0): Status ERROR: org.eclipse.cdt.dsf.gdb code=10004 Interrupt failed. null' resulted in an error.
+!SUBENTRY 1 org.eclipse.cdt.dsf.gdb 4 10004 2021-07-04 14:40:46.936
+!MESSAGE Interrupt failed.
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:49:09.580
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:49:09.689
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:50:25.002
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:50:25.115
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:52:52.687
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:52:52.804
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:57:15.209
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:57:15.324
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:58:54.982
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 14:58:55.128
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 15:58:55.353
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 15:58:55.460
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 15:59:45.718
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 15:59:45.857
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:04:21.568
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:04:21.693
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:05:16.406
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:05:16.533
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:06:16.776
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:06:16.886
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:07:37.553
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:07:37.674
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:09:26.896
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:09:27.127
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.364
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@382e48cc): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.365
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@63d31955): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.365
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@6dc4ac4f): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.365
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@c74e54a): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.366
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@3f5911fc): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.367
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@98b41bd): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.368
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@6f19fdb7): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.369
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@7e5c74f1): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.369
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@45f13f6e): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.370
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@63474599): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.370
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@3ab466a5): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.370
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@7737e382): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.371
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@7eb02a2): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.371
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@1a6d831): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.371
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@4c8549fd): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.371
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@22746902): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.372
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@32759659): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.372
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@729198c7): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.372
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@6599dc9): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.372
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@c98f494): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.372
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@4df54022): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.373
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@4480c7e): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.cdt.dsf 4 10005 2021-07-04 16:18:51.373
+!MESSAGE Request for monitor: 'RequestMonitor (org.eclipse.cdt.dsf.concurrent.RequestMonitor@373bb817): Status OK: unknown code=0 OK null' resulted in a rejected execution exception.
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:18:55.940
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:18:56.065
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:30:42.360
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.debug.gdbjtag.core 4 0 2021-07-04 16:30:42.768
+!MESSAGE OpenOCD failed with code (1).
+
+For more details, see the openocd console.
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:31:03.125
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:31:03.311
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:37:21.645
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:37:21.826
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.debug.ui 4 120 2021-07-04 16:42:00.497
+!MESSAGE Error logged from Debug UI: 
+!STACK 0
+java.lang.InterruptedException
+	at java.base/java.util.concurrent.FutureTask.awaitDone(FutureTask.java:418)
+	at java.base/java.util.concurrent.FutureTask.get(FutureTask.java:203)
+	at org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager.runInUIThreadWithTimeout(SelectedResourceManager.java:262)
+	at org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager.getFromUI(SelectedResourceManager.java:240)
+	at org.eclipse.debug.internal.ui.stringsubstitution.SelectedResourceManager.getActiveWindow(SelectedResourceManager.java:231)
+	at org.eclipse.debug.ui.DebugUITools.getDebugContext(DebugUITools.java:247)
+	at org.eclipse.cdt.debug.internal.ui.editors.DelegatingDebugTextHover.getDelegate(DelegatingDebugTextHover.java:99)
+	at org.eclipse.cdt.debug.internal.ui.editors.DelegatingDebugTextHover.getHoverInfo2(DelegatingDebugTextHover.java:68)
+	at org.eclipse.cdt.internal.ui.text.c.hover.BestMatchHover.getHoverInfo2(BestMatchHover.java:149)
+	at org.eclipse.cdt.internal.ui.text.c.hover.CEditorTextHoverProxy.getHoverInfo2(CEditorTextHoverProxy.java:85)
+	at org.eclipse.jface.text.TextViewerHoverManager$1.run(TextViewerHoverManager.java:155)
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:43:03.206
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:43:03.342
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:48:48.181
+!MESSAGE /usr/bin/openocd -c gdb_port 3333 -c telnet_port 4444 -c tcl_port 6666 -f board/ek-tm4c123gxl.cfg -c echo "Started by GNU MCU Eclipse"
+
+!ENTRY org.eclipse.embedcdt.managedbuild.cross.riscv.core 4 1 2021-07-04 16:48:48.394
+!MESSAGE arm-none-eabi-gdb --interpreter=mi2 --nx

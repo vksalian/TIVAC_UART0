@@ -4,18 +4,28 @@
 
 #define UART_INTERRUPT 1
 
+#define DBG_PRINT    0
+
 /* SPI Buffer Size */
 #define SPI_BUFFER_SIZE        (100)
-#define SPI_COMMAND_SIZE_BYTES   (2)
+#define SPI_COMMAND_SIZE_BYTES   (8)
 #define SPI_PROCESS_SIZE        (10)
 
-#define SPI_HEADER              ('A')
+#define SPI_HEADER             ('A')
 
-char Spi_Buffer[SPI_BUFFER_SIZE];
-int  Spi_BufferFillIndex = 0;
-int  Spi_BufferProcessIndex = 0;
+#define COMMAND_PROCESS          (1)
+
+/* SPI Raw Buffer and index */
+char Spi_RawBuffer[SPI_BUFFER_SIZE];
+int  Spi_RawBufferFillIndex = 0;
+int  Spi_RawBufferProcessIndex = 0;
+int  RawBytesRemainingForProcess = 0;
+
+/* SPI Command count, Current SPI command packet to parse */
 int  Spi_CommandCount = 0;
-int  BytesRemainingForProcess = 0;
+char Spi_CurrentCommandPacket[SPI_COMMAND_SIZE_BYTES];
+int  Spi_CurrentCommandPacketIndex = 0;
+uint8_t  Spi_HeaderDetected = 0;
 
 void Delay(unsigned long counter);
 char UART0_Receiver(void);
@@ -24,6 +34,7 @@ void printstring(char *str);
 void printchar(char c);
 char *numtostring(unsigned int num, unsigned int base);
 void Spi_ParseCommand(void);
+void Spi_PrintCommand(void);
 
 void UART0_Handler( void )
 {
@@ -32,28 +43,31 @@ void UART0_Handler( void )
 	rx_data = UART0->DR ; // get the received data byte
 
 	// SPI
-	if(Spi_BufferFillIndex >= SPI_BUFFER_SIZE)
+	if(Spi_RawBufferFillIndex >= SPI_BUFFER_SIZE)
 	{
-		Spi_BufferFillIndex = 0;
+		Spi_RawBufferFillIndex = 0;
 	}
 
 	printstring("[RX] New Byte : ");
-	printstring("Spi_Buffer[");
-	printstring(numtostring(Spi_BufferFillIndex,10));
+	printstring("Spi_RawBuffer[");
+	printstring(numtostring(Spi_RawBufferFillIndex,10));
 	printstring("] Hex = ");
 	printstring(numtostring(rx_data,16));
+	printstring("\n\r");
 
-	Spi_Buffer[Spi_BufferFillIndex++] = rx_data;
-	BytesRemainingForProcess++; /* The bytes remaining to process */
+	Spi_RawBuffer[Spi_RawBufferFillIndex++] = rx_data;
+	RawBytesRemainingForProcess++; /* The bytes remaining to process */
 
 	if(rx_data == 'A')
 		GPIOF->DATA  = 0x02;
 	else if(rx_data == 'B')
 		GPIOF->DATA  = 0x00;
+#if DBG_PRINT
 
 	printstring(" : Char = ");
 	UART0_Transmitter(rx_data); // send data that is received
 	printstring("\n\r");
+#endif
 }
 
 int main(void)
@@ -115,20 +129,25 @@ int main(void)
     GPIOA->AMSEL = 0;    /* Turn off analg function*/
     GPIOA->PCTL = 0x00000011;     /* configure PE4 and PE5 for UART */
 
-    // enable interrupt
-      UART0->ICR &= ~(0x0780);; // Clear receive interrupt
-      UART0->IM  = 0x0010;
-      NVIC->ISER[0] |= 0x00000020; /* enable IRQ5 for UART0 */
+    /* Enable Interrupt */
+    UART0->ICR &= ~(0x0780);; // Clear receive interrupt
+    UART0->IM  = 0x0010;
+    NVIC->ISER[0] |= 0x00000020; /* enable IRQ5 for UART0 */
 
-      SYSCTL->RCGCGPIO |= 0x20; // turn on bus clock for GPIOF
-        GPIOF->DIR       |= 0x02; //set GREEN pin as a digital output pin
-        GPIOF->DEN       |= 0x02;  // Enable PF3 pin as a digital pin
+    /* Configure GREEN LED */
+    SYSCTL->RCGCGPIO |= 0x20; // turn on bus clock for GPIOF
+    GPIOF->DIR       |= 0x02; //set GREEN pin as a digital output pin
+    GPIOF->DEN       |= 0x02;  // Enable PF3 pin as a digital pin
 
-	  Delay(10);
-	  Spi_BufferFillIndex = 0;
-	  Spi_BufferProcessIndex = 0;
-	  Spi_CommandCount = 0;
-	  BytesRemainingForProcess = 0;
+	Delay(10);
+
+	/* Initialize SPI data index and counters */
+	Spi_RawBufferFillIndex = 0;
+	Spi_RawBufferProcessIndex = 0;
+	RawBytesRemainingForProcess = 0;
+
+	Spi_CommandCount = 0;
+	Spi_CurrentCommandPacketIndex = 0;
 
 	printstring("\n\rEnter Characters:\n\r");
 	Delay(10);
@@ -138,10 +157,12 @@ int main(void)
 		// printstring("\n\rIn Main Loop\r\n");
 
 		/* If there are sufficient bytes available for processing */
-		if(BytesRemainingForProcess >= SPI_PROCESS_SIZE)
+		if(RawBytesRemainingForProcess >= SPI_PROCESS_SIZE)
 		{
+#if DBG_PRINT
 			/* Most probably, you have the full command */
 			printstring("\n\rFull Command is there probably\r\n");
+#endif
 
 			Spi_ParseCommand();
 		}
@@ -203,51 +224,123 @@ char *numtostring(unsigned int num, unsigned int base)
 
 void Spi_ParseCommand(void)
 {
-	uint8_t header_detected = 0;
-
 	__disable_irq();
 
-	while(BytesRemainingForProcess >= SPI_COMMAND_SIZE_BYTES)
+	/* If minimum SPI_COMMAND_SIZE_BYTES bytes available in buffer */
+	while(RawBytesRemainingForProcess >= SPI_COMMAND_SIZE_BYTES)
 	{
-		// SPI
-		if(Spi_BufferProcessIndex >= SPI_BUFFER_SIZE)
+		/* Reset Spi_RawBufferProcessIndex on overflow */
+		if(Spi_RawBufferProcessIndex >= SPI_BUFFER_SIZE)
 		{
-			Spi_BufferProcessIndex = 0;
+			Spi_RawBufferProcessIndex = 0;
 		}
 
-		if(Spi_Buffer[Spi_BufferProcessIndex] == SPI_HEADER)
+		if(Spi_RawBuffer[Spi_RawBufferProcessIndex] == SPI_HEADER)
 		{
+#if DBG_PRINT
 			printstring("[PR] Process  : ");
-			printstring("Spi_Buffer[");
-			printstring(numtostring(Spi_BufferProcessIndex,10));
+			printstring("Spi_RawBuffer[");
+			printstring(numtostring(Spi_RawBufferProcessIndex,10));
 			printstring("] Hex = ");
-			printstring(numtostring(Spi_Buffer[Spi_BufferProcessIndex],16));
+			printstring(numtostring(Spi_RawBuffer[Spi_RawBufferProcessIndex],16));
 			printstring(" : Char = ");
-			UART0_Transmitter(Spi_Buffer[Spi_BufferProcessIndex]); // send data that is received
+			UART0_Transmitter(Spi_RawBuffer[Spi_RawBufferProcessIndex]); // send data that is received
 			printstring(" : Header Detected\n\r");
+#endif
+			/* There is chance that you captured full packet already and Spi_HeaderDetected = 1 */
+			if((Spi_CurrentCommandPacketIndex == SPI_COMMAND_SIZE_BYTES) && (Spi_HeaderDetected == 1))
+			{
+				Spi_PrintCommand();
+				Spi_HeaderDetected = 0;
+				//Spi_CurrentCommandPacketIndex = 0;
+			}
 
-			header_detected = 1;
-			Spi_BufferProcessIndex++;
-			BytesRemainingForProcess--;
+			Spi_HeaderDetected = 1;
+
+			/* NOTE: Assumes that the Header is never comes as DATA character */
+
+#if COMMAND_PROCESS
+			/* Update the Spi_CurrentCommandPacket buffer */
+			Spi_CurrentCommandPacketIndex = 0;  /* Index reset to 0 */
+			Spi_CurrentCommandPacket[Spi_CurrentCommandPacketIndex] = Spi_RawBuffer[Spi_RawBufferProcessIndex];
+			Spi_CurrentCommandPacketIndex++;
+#endif
+
+			/* Should be at the end */
+			Spi_RawBufferProcessIndex++;
+			RawBytesRemainingForProcess--;
 		}
 		else
 		{
-			printstring("[PR] Process  : ");
-			printstring("Spi_Buffer[");
-			printstring(numtostring(Spi_BufferProcessIndex,10));
-			printstring("] Hex = ");
-			printstring(numtostring(Spi_Buffer[Spi_BufferProcessIndex],16));
-			printstring(" : Char = ");
-						UART0_Transmitter(Spi_Buffer[Spi_BufferProcessIndex]); // send data that is received
-			printstring(" : Not Header\n\r");
+#if DBG_PRINT
 
-			Spi_BufferProcessIndex++;
-			BytesRemainingForProcess--;
+			printstring("[PR] Process  : ");
+			printstring("Spi_RawBuffer[");
+			printstring(numtostring(Spi_RawBufferProcessIndex,10));
+			printstring("] Hex = ");
+			printstring(numtostring(Spi_RawBuffer[Spi_RawBufferProcessIndex],16));
+			printstring(" : Char = ");
+			UART0_Transmitter(Spi_RawBuffer[Spi_RawBufferProcessIndex]); // send data that is received
+			printstring(" : Not Header\n\r");
+#endif
+
+#if COMMAND_PROCESS
+			// if header detected, then fill data till size of SPI command Bytes.
+			// If buffer full, reset header_detected abd parse comamnd
+			// If buffer not full just fill buffer63
+
+
+			// if Header is not detected, then this is invalid data, ignore.
+
+			if(Spi_HeaderDetected == 1)
+			{
+				/* Have captured full packet already */
+				if(Spi_CurrentCommandPacketIndex == SPI_COMMAND_SIZE_BYTES)
+				{
+					Spi_PrintCommand();
+					Spi_HeaderDetected = 0;
+					//Spi_CurrentCommandPacketIndex = 0;
+				}
+				else if(Spi_CurrentCommandPacketIndex < SPI_COMMAND_SIZE_BYTES)
+				{
+					/* Then it is data that need to be added into Spi_CurrentCommandPacket */
+					Spi_CurrentCommandPacket[Spi_CurrentCommandPacketIndex] = Spi_RawBuffer[Spi_RawBufferProcessIndex];
+					Spi_CurrentCommandPacketIndex++;
+				}
+				else
+				{
+					printstring(".................................????????????\n\r");
+				}
+			}
+			else
+			{
+#if DBG_PRINT
+
+				printstring(".................................Searching for Header....\n\r");
+#endif
+			}
+
+#endif
+
+			Spi_RawBufferProcessIndex++;
+			RawBytesRemainingForProcess--;
 		}
 	}
 
 	__enable_irq();
 }
+
+void Spi_PrintCommand(void)
+{
+	printstring("[SPI_COMMAND] ");
+	for(int index = 0; index < SPI_COMMAND_SIZE_BYTES; index++)
+	{
+		printstring(numtostring(Spi_CurrentCommandPacket[index],16));
+		printstring(" ");
+	}
+	printstring("\n\r");
+}
+
 //void SystemInit(void)
 //{
 //    __disable_irq();    /* disable all IRQs */

@@ -1,8 +1,4 @@
-11:12:59 **** Clean-only build of configuration Debug for project tiva-uart5 ****
-make clean 
-rm -rf  ./bsp.o ./main.o ./startup_TM4C123.o ./system_TM4C123.o  tiva-uart5.hex  tiva-uart5.siz  ./bsp.d ./main.d ./startup_TM4C123.d ./system_TM4C123.d  tiva-uart5.elf
- 
-11:13:01 **** Build of configuration Debug for project tiva-uart5 ****
+16:42:52 **** Build of configuration Debug for project tiva-uart5 ****
 make all 
 Building file: ../bsp.c
 Invoking: GNU Arm Cross C Compiler
@@ -12,10 +8,6 @@ Finished building: ../bsp.c
 Building file: ../main.c
 Invoking: GNU Arm Cross C Compiler
 arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mlittle-endian -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -DTM4C123GH6PM -std=gnu11 -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
-../main.c: In function 'Spi_ParseCommand':
-../main.c:206:10: warning: variable 'header_detected' set but not used [-Wunused-but-set-variable]
-  206 |  uint8_t header_detected = 0;
-      |          ^~~~~~~~~~~~~~~
 Finished building: ../main.c
  
 Building file: ../startup_TM4C123.c
@@ -40,6 +32,36 @@ Finished building: tiva-uart5.hex
 Invoking: GNU Arm Cross Print Size
 arm-none-eabi-size --format=berkeley "tiva-uart5.elf"
    text	   data	    bss	    dec	    hex	filename
-   4328	     24	    172	   4524	   11ac	tiva-uart5.elf
+   4296	     24	    188	   4508	   119c	tiva-uart5.elf
+Finished building: tiva-uart5.siz
+ 
+16:43:02 **** Incremental Build of configuration Debug for project tiva-uart5 ****
+make all 
+Invoking: GNU Arm Cross Print Size
+arm-none-eabi-size --format=berkeley "tiva-uart5.elf"
+   text	   data	    bss	    dec	    hex	filename
+   4296	     24	    188	   4508	   119c	tiva-uart5.elf
+Finished building: tiva-uart5.siz
+ 
+16:48:47 **** Incremental Build of configuration Debug for project tiva-uart5 ****
+make all 
+Building file: ../main.c
+Invoking: GNU Arm Cross C Compiler
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mlittle-endian -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -DTM4C123GH6PM -std=gnu11 -MMD -MP -MF"main.d" -MT"main.o" -c -o "main.o" "../main.c"
+Finished building: ../main.c
+ 
+Building target: tiva-uart5.elf
+Invoking: GNU Arm Cross C Linker
+arm-none-eabi-gcc -mcpu=cortex-m4 -mthumb -mlittle-endian -O0 -fmessage-length=0 -fsigned-char -ffunction-sections -fdata-sections -Wall  -g3 -T "/home/vksalian/Desktop/Practice_2021/UART_TIVAC/eclipse_workspace/tiva-uart5/tm4c123gh6pm.ld" -nostdlib -Wl,-Map,"tiva-uart5.map" -o "tiva-uart5.elf"  ./bsp.o ./main.o ./startup_TM4C123.o ./system_TM4C123.o   
+Finished building target: tiva-uart5.elf
+ 
+Invoking: GNU Arm Cross Create Flash Image
+arm-none-eabi-objcopy -O ihex "tiva-uart5.elf"  "tiva-uart5.hex"
+Finished building: tiva-uart5.hex
+ 
+Invoking: GNU Arm Cross Print Size
+arm-none-eabi-size --format=berkeley "tiva-uart5.elf"
+   text	   data	    bss	    dec	    hex	filename
+   4296	     24	    188	   4508	   119c	tiva-uart5.elf
 Finished building: tiva-uart5.siz
  
